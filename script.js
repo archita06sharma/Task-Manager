@@ -9,19 +9,25 @@ button.addEventListener("click",function(){
 
     if(taskText==="") return;
 
-    tasks.push(taskText);
+    const taskObj = {
+        id : Date.now(),
+        text : taskText,
+        completed : false
+    };
+
+    tasks.push(taskObj);
 
     localStorage.setItem("tasks",JSON.stringify(tasks));
 
-    addTaskToUI(taskText);
+    addTaskToUI(taskObj);
 
     input.value = "";
 
 });
 
-function addTaskToUI(taskText){
+function addTaskToUI(task){
     const li = document.createElement("li");
-    li.textContent=taskText;
+    li.textContent=task.text;
 
     const deleteBtn = document.createElement("button");
     deleteBtn.innerText = "Delete";
@@ -29,12 +35,27 @@ function addTaskToUI(taskText){
     deleteBtn.addEventListener("click",function(){
         li.remove();
 
-        tasks = tasks.filter(task => task !== taskText);
+        tasks = tasks.filter(t => t.id !== task.id);
         localStorage.setItem("tasks",JSON.stringify(tasks));
     });
 
     li.appendChild(deleteBtn);
     list.appendChild(li);
+
+    li.addEventListener("click",function(){
+        task.completed = !task.completed;
+
+        if(task.completed){
+            li.style.textDecoration = "line-through";
+        }else{
+            li.style.textDecoration = "none";
+        }
+        localStorage.setItem("tasks",JSON.stringify(tasks));
+    });
+
+    if(task.completed){
+        li.style.textDecoration = "line-through";
+    }
 }
 
 window.addEventListener("load",function(){

@@ -1,3 +1,5 @@
+let currentFilter = "all";
+
 const input = document.getElementById("taskInput");
 const button = document.getElementById("addBtn");
 const list = document.getElementById("taskList");
@@ -19,7 +21,7 @@ button.addEventListener("click",function(){
 
     localStorage.setItem("tasks",JSON.stringify(tasks));
 
-    addTaskToUI(taskObj);
+    renderTasks();
 
     input.value = "";
 
@@ -33,10 +35,10 @@ function addTaskToUI(task){
     deleteBtn.innerText = "Delete";
 
     deleteBtn.addEventListener("click",function(){
-        li.remove();
 
         tasks = tasks.filter(t => t.id !== task.id);
         localStorage.setItem("tasks",JSON.stringify(tasks));
+        renderTasks();
     });
 
     li.appendChild(deleteBtn);
@@ -45,12 +47,9 @@ function addTaskToUI(task){
     li.addEventListener("click",function(){
         task.completed = !task.completed;
 
-        if(task.completed){
-            li.style.textDecoration = "line-through";
-        }else{
-            li.style.textDecoration = "none";
-        }
         localStorage.setItem("tasks",JSON.stringify(tasks));
+
+        renderTasks();
     });
 
     if(task.completed){
@@ -58,14 +57,46 @@ function addTaskToUI(task){
     }
 }
 
+function renderTasks(){
+    list.innerHTML = ""; //clear UI
+
+    let filteredTasks;
+
+    if(currentFilter === "completed"){
+        filteredTasks = tasks.filter(task => task.completed);
+    }else if(currentFilter === "pending"){
+        filteredTasks = tasks.filter(task => !task.completed);
+    }else{
+        filteredTasks=tasks;
+    }
+
+    filteredTasks.forEach(task => {
+        addTaskToUI(task);
+    });
+}
+
+document.getElementById("allBtn").addEventListener("click",function(){
+    currentFilter = "all";
+    renderTasks();
+});
+
+document.getElementById("completedBtn").addEventListener("click",function(){
+    currentFilter = "completed";
+    renderTasks();
+});
+
+document.getElementById("pendingBtn").addEventListener("click",function(){
+    currentFilter = "pending";
+    renderTasks();
+});
+
 window.addEventListener("load",function(){
     const storedTasks=localStorage.getItem("tasks");
 
     if(storedTasks){
         tasks = JSON.parse(storedTasks);
 
-        tasks.forEach(task => {
-            addTaskToUI(task);
-        });
+        renderTasks();
+        
     }
 });

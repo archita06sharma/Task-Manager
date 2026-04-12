@@ -107,6 +107,15 @@ document.getElementById("pendingBtn").addEventListener("click",function(){
     renderTasks();
 });
 
+document.getElementById("clearCompletedBtn").addEventListener("click",function(){
+
+    tasks = tasks.filter(task => !task.completed);
+
+    localStorage.setItem("tasks",JSON.stringify(tasks));
+    
+    renderTasks();
+})
+
 window.addEventListener("load",function(){
     const storedTasks=localStorage.getItem("tasks");
 

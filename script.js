@@ -31,6 +31,22 @@ function addTaskToUI(task){
     const li = document.createElement("li");
     li.textContent=task.text;
 
+    const editBtn = document.createElement("button");
+    editBtn.innerText = "Edit";
+
+    editBtn.addEventListener("click",function (e){
+        e.stopPropagation();  //otherwise it triggers li click 
+
+        const newText = prompt("Edit your task:",task.text);
+
+        if(newText === null || newText.trim() === "") return;
+
+        task.text = newText;
+
+        localStorage.setItem("tasks",JSON.stringify(tasks));
+        renderTasks();
+    })
+
     const deleteBtn = document.createElement("button");
     deleteBtn.innerText = "Delete";
 
@@ -41,6 +57,7 @@ function addTaskToUI(task){
         renderTasks();
     });
 
+    li.appendChild(editBtn);
     li.appendChild(deleteBtn);
     list.appendChild(li);
 

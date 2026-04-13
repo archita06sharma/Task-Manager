@@ -29,7 +29,11 @@ button.addEventListener("click",function(){
 
 function addTaskToUI(task){
     const li = document.createElement("li");
-    li.textContent=task.text;
+
+    const span = document.createElement("span");
+    span.textContent = task.text;
+
+    const btnContainer = document.createElement("div");
 
     const editBtn = document.createElement("button");
     editBtn.innerText = "Edit";
@@ -50,15 +54,19 @@ function addTaskToUI(task){
     const deleteBtn = document.createElement("button");
     deleteBtn.innerText = "Delete";
 
-    deleteBtn.addEventListener("click",function(){
-
+    deleteBtn.addEventListener("click",function(e){
+        e.stopPropagation();
         tasks = tasks.filter(t => t.id !== task.id);
         localStorage.setItem("tasks",JSON.stringify(tasks));
         renderTasks();
     });
 
-    li.appendChild(editBtn);
-    li.appendChild(deleteBtn);
+    btnContainer.appendChild(editBtn);
+    btnContainer.appendChild(deleteBtn);
+
+    li.appendChild(span);
+    li.appendChild(btnContainer);
+
     list.appendChild(li);
 
     li.addEventListener("click",function(){
@@ -70,7 +78,7 @@ function addTaskToUI(task){
     });
 
     if(task.completed){
-        li.style.textDecoration = "line-through";
+        span.style.textDecoration = "line-through";
     }
 }
 

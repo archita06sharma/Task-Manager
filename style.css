@@ -51,3 +51,23 @@ button:hover{
     list-style: none;
     padding: 0;
 }
+
+#taskList li{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 10px;
+    margin-bottom: 8px;
+    background-color: #fafafa;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+}
+
+#taskList button{
+    margin-left: 5px;
+}
+
+#taskList li:hover{
+    background-color: #f0f0f0;
+}

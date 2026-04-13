@@ -98,6 +98,22 @@ function renderTasks(){
     filteredTasks.forEach(task => {
         addTaskToUI(task);
     });
+
+    const counter = document.getElementById("taskCounter");
+    const emptyMsg = document.getElementById("emptyMessage");
+
+    //empty state
+    if(tasks.length===0){
+        counter.style.display="none";
+        emptyMsg.style.display="block";
+    }else{
+        counter.style.display="block";
+        emptyMsg.style.display="none";
+
+         //count pending tasks
+        const remaining = tasks.filter(task => !task.completed).length;
+        counter.textContent = `${remaining} task(s) left`;
+    }
 }
 
 document.getElementById("allBtn").addEventListener("click",function(){

@@ -114,6 +114,8 @@ function renderTasks(){
         const remaining = tasks.filter(task => !task.completed).length;
         counter.textContent = `${remaining} task(s) left`;
     }
+
+    updateActiveFilter();
 }
 
 document.getElementById("allBtn").addEventListener("click",function(){
@@ -150,3 +152,17 @@ window.addEventListener("load",function(){
         
     }
 });
+
+function updateActiveFilter(){
+    document.getElementById("allBtn").classList.remove("active");
+    document.getElementById("completedBtn").classList.remove("active");
+    document.getElementById("pendingBtn").classList.remove("active");
+
+    if(currentFilter === "all"){
+        document.getElementById("allBtn").classList.add("active");
+    }else if(currentFilter === "completed"){
+        document.getElementById("completedBtn").classList.add("active");
+    }else{
+        document.getElementById("pendingBtn").classList.add("active");
+    }
+}
